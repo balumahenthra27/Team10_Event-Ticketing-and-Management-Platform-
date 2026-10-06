@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>EventHub - Browse Events</title>
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            background: #f5f7fa;
+
+            font-family: Arial, sans-serif;
+
+        }
+
+
+        /* Navbar */
+
+        .navbar {
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        /* Hero */
+
+        .hero {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0d6efd,
+                    #0043a8
+                );
+
+            color: white;
+
+            padding: 65px 0;
+
+        }
+
+
+        .hero h1 {
+
+            font-size: 42px;
+
+            font-weight: 700;
+
+        }
+
+
+        .hero p {
+
+            opacity: 0.9;
+
+            font-size: 18px;
+
+        }
+
+
+        /* Search Box */
+
+        .search-box {
+
+            background: white;
+
+            padding: 10px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.15);
+
+        }
+
+
+        .search-box input {
+
+            border: none;
+
+            box-shadow: none;
+
+            padding: 12px;
+
+        }
+
+
+        .search-box input:focus {
+
+            box-shadow: none;
+
+        }
+
+
+        /* Filter */
+
+        .filter-card {
+
+            background: white;
+
+            border: none;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 15px
+                rgba(0, 0, 0, 0.06);
+
+        }
+
+
+        /* Event Card */
+
+        .event-card {
+
+            border: none;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            background: white;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.07);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
+            height: 100%;
+
+        }
+
+
+        .event-card:hover {
+
+            transform:
+                translateY(-5px);
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.12);
+
+        }
+
+
+        .event-image {
+
+            width: 100%;
+
+            height: 210px;
+
+            object-fit: cover;
+
+        }
+
+
+        .event-body {
+
+            padding: 22px;
+
+        }
+
+
+        .event-title {
+
+            font-size: 21px;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .event-info {
+
+            color: #6c757d;
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .event-info i {
+
+            color: #0d6efd;
+
+            margin-right: 8px;
+
+        }
+
+
+        .price {
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            color: #0d6efd;
+
+        }
+
+
+        /* Empty Result */
+
+        .no-results {
+
+            text-align: center;
+
+            padding: 60px 20px;
+
+            display: none;
+
+        }
+
+
+        .no-results i {
+
+            font-size: 55px;
+
+            color: #adb5bd;
+
+        }
+
+
+        /* Footer */
+
+        footer {
+
+            background: #212529;
+
+            color: white;
+
+            margin-top: 60px;
+
+            padding: 30px 0;
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            .hero h1 {
+
+                font-size: 32px;
+
+            }
+
+            .hero {
+
+                padding: 45px 0;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold">
+
+            <i class="bi bi-ticket-perforated me-2"></i>
+
+            EventHub
+
+        </a>
+
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarMenu">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+
+                    <a
+                        href="#events"
+                        class="nav-link active">
+
+                        Browse Events
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        href="#categories"
+                        class="nav-link">
+
+                        Categories
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item ms-lg-2">
+
+                    <button
+                        onclick="logout()"
+                        class="btn btn-outline-light btn-sm mt-1">
+
+                        Logout
+
+                    </button>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-7">
+
+                <h1>
+
+                    Discover Amazing Events
+
+                </h1>
+
+                <p class="mb-4">
+
+                    Find events, explore details,
+                    and book your tickets easily.
+
+                </p>
+
+
+                <!-- Search -->
+
+                <div class="search-box">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text bg-white border-0">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+
+                        <input
+                            type="text"
+                            id="searchInput"
+                            class="form-control"
+                            placeholder="Search events by name, location or category...">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     EVENTS SECTION
+========================= -->
+
+<section
+    id="events"
+    class="container py-5">
+
+
+    <div class="row g-4">
+
+
+        <!-- FILTER -->
+
+        <div class="col-lg-3">
+
+
+            <div class="card filter-card p-4">
+
+                <h5 class="fw-bold mb-4">
+
+                    <i class="bi bi-funnel me-2"></i>
+
+                    Filter Events
+
+                </h5>
+
+
+                <!-- Category -->
+
+                <label
+                    class="form-label fw-semibold">
+
+                    Category
+
+                </label>
+
+
+                <select
+                    id="categoryFilter"
+                    class="form-select mb-4">
+
+                    <option value="all">
+                        All Categories
+                    </option>
+
+                    <option value="Technology">
+                        Technology
+                    </option>
+
+                    <option value="Music">
+                        Music
+                    </option>
+
+                    <option value="Business">
+                        Business
+                    </option>
+
+                    <option value="Sports">
+                        Sports
+                    </option>
+
+                </select>
+
+
+                <!-- Date -->
+
+                <label
+                    class="form-label fw-semibold">
+
+                    Event Date
+
+                </label>
+
+
+                <select
+                    id="dateFilter"
+                    class="form-select mb-4">
+
+                    <option value="all">
+                        All Dates
+                    </option>
+
+                    <option value="October">
+                        October 2026
+                    </option>
+
+                    <option value="November">
+                        November 2026
+                    </option>
+
+                    <option value="December">
+                        December 2026
+                    </option>
+
+                </select>
+
+
+                <!-- Reset -->
+
+                <button
+                    id="resetButton"
+                    class="btn btn-outline-secondary w-100">
+
+                    <i class="bi bi-arrow-clockwise me-2"></i>
+
+                    Reset Filters
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- EVENTS -->
+
+        <div class="col-lg-9">
+
+
+            <div
+                class="d-flex justify-content-between
+                       align-items-center mb-4">
+
+                <div>
+
+                    <h3 class="fw-bold mb-1">
+
+                        Upcoming Events
+
+                    </h3>
+
+                    <p
+                        id="eventCount"
+                        class="text-secondary mb-0">
+
+                        0 events found
+
+                    </p>
+
+                </div>
+
+
+                <select
+                    id="sortFilter"
+                    class="form-select"
+                    style="width:180px;">
+
+                    <option value="default">
+                        Sort By
+                    </option>
+
+                    <option value="price-low">
+                        Price: Low to High
+                    </option>
+
+                    <option value="price-high">
+                        Price: High to Low
+                    </option>
+
+                    <option value="name">
+                        Name
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Event Cards -->
+
+            <div
+                id="eventList"
+                class="row g-4">
+
+            </div>
+
+
+            <!-- No Results -->
+
+            <div
+                id="noResults"
+                class="no-results">
+
+                <i class="bi bi-calendar-x"></i>
+
+                <h4 class="fw-bold mt-3">
+
+                    No Events Found
+
+                </h4>
+
+                <p class="text-secondary">
+
+                    Try changing your search or filters.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="container text-center">
+
+        <h5 class="fw-bold">
+
+            <i class="bi bi-ticket-perforated me-2"></i>
+
+            EventHub
+
+        </h5>
+
+        <p class="mb-0 text-secondary">
+
+            Event Ticketing Management System
+
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+
+<script>
+
+
+/* =========================
+   LOGIN CHECK
+========================= */
+
+if (
+    localStorage.getItem("isLoggedIn")
+    !== "true"
+) {
+
+    window.location.href =
+        "../registration-login/index.html";
+
+}
+
+
+
+/* =========================
+   EVENT DATA
+========================= */
+
+const events = [
+
+    {
+
+        id: 1,
+
+        name: "KCT Tech Fest 2026",
+
+        category: "Technology",
+
+        date: "18 October 2026",
+
+        month: "October",
+
+        location:
+            "Kumaraguru College of Technology",
+
+        price: 199,
+
+        image:
+            "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80"
+
+    },
+
+
+    {
+
+        id: 2,
+
+        name: "Music Night Live",
+
+        category: "Music",
+
+        date: "24 October 2026",
+
+        month: "October",
+
+        location:
+            "Codissia Grounds, Coimbatore",
+
+        price: 299,
+
+        image:
+            "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=80"
+
+    },
+
+
+    {
+
+        id: 3,
+
+        name: "Startup & Innovation Summit",
+
+        category: "Business",
+
+        date: "2 November 2026",
+
+        month: "November",
+
+        location:
+            "Hindusthan Convention Centre",
+
+        price: 499,
+
+        image:
+            "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80"
+
+    },
+
+
+    {
+
+        id: 4,
+
+        name: "College Sports Meet",
+
+        category: "Sports",
+
+        date: "15 November 2026",
+
+        month: "November",
+
+        location:
+            "KCT Sports Ground",
+
+        price: 99,
+
+        image:
+            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=900&q=80"
+
+    },
+
+
+    {
+
+        id: 5,
+
+        name: "AI & Machine Learning Workshop",
+
+        category: "Technology",
+
+        date: "5 December 2026",
+
+        month: "December",
+
+        location:
+            "KCT Innovation Centre",
+
+        price: 349,
+
+        image:
+            "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=80"
+
+    },
+
+
+    {
+
+        id: 6,
+
+        name: "Business Leadership Conference",
+
+        category: "Business",
+
+        date: "12 December 2026",
+
+        month: "December",
+
+        location:
+            "Coimbatore Trade Centre",
+
+        price: 599,
+
+        image:
+            "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=80"
+
+    }
+
+];
+
+const organizerEvents =
+    JSON.parse(
+        localStorage.getItem("organizerEvents")
+    ) || [];
+
+const formattedOrganizerEvents =
+    organizerEvents.map(function(event) {
+
+        const eventDate =
+            new Date(event.date);
+
+        return {
+            id: event.id,
+
+            name: event.name,
+
+            category: event.category,
+
+            date: eventDate.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            ),
+
+            month: eventDate.toLocaleString(
+                "en-US",
+                {
+                    month: "long"
+                }
+            ),
+
+            location: event.venue,
+
+            price: event.standardPrice,
+
+            standardPrice: event.standardPrice,
+
+            vipPrice: event.vipPrice,
+
+            standardAvailable:
+                event.standardAvailable,
+
+            vipAvailable:
+                event.vipAvailable,
+
+            description:
+                event.description,
+
+            time:
+                event.time,
+
+            image:
+                event.image ||
+                "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
+        };
+
+    });
+
+const allEvents = [
+    ...events,
+    ...formattedOrganizerEvents
+];
+
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const eventList =
+    document.getElementById(
+        "eventList"
+    );
+
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+
+const categoryFilter =
+    document.getElementById(
+        "categoryFilter"
+    );
+
+
+const dateFilter =
+    document.getElementById(
+        "dateFilter"
+    );
+
+
+const sortFilter =
+    document.getElementById(
+        "sortFilter"
+    );
+
+
+const eventCount =
+    document.getElementById(
+        "eventCount"
+    );
+
+
+const noResults =
+    document.getElementById(
+        "noResults"
+    );
+
+
+
+/* =========================
+   DISPLAY EVENTS
+========================= */
+
+function displayEvents(eventData) {
+
+    eventList.innerHTML = "";
+
+
+    eventCount.textContent =
+        eventData.length +
+        " events found";
+
+
+    if (eventData.length === 0) {
+
+        noResults.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    noResults.style.display =
+        "none";
+
+
+    eventData.forEach(
+        function(event) {
+
+            eventList.innerHTML += `
+
+                <div class="col-md-6">
+
+                    <div class="event-card">
+
+                        <img
+                            src="${event.image}"
+                            class="event-image"
+                            alt="${event.name}">
+
+
+                        <div class="event-body">
+
+
+                            <span
+                                class="badge bg-primary mb-2">
+
+                                ${event.category}
+
+                            </span>
+
+
+                            <h4 class="event-title">
+
+                                ${event.name}
+
+                            </h4>
+
+
+                            <div class="event-info">
+
+                                <i class="bi bi-calendar-event"></i>
+
+                                ${event.date}
+
+                            </div>
+
+
+                            <div class="event-info">
+
+                                <i class="bi bi-geo-alt"></i>
+
+                                ${event.location}
+
+                            </div>
+
+
+                            <div
+                                class="d-flex
+                                       justify-content-between
+                                       align-items-center
+                                       mt-3">
+
+                                <div>
+
+                                    <small
+                                        class="text-secondary">
+const organizerEvents
+                                        Starting from
+
+                                    </small>
+
+                                    <div class="price">
+
+                                        ₹${event.price}
+
+                                    </div>
+
+                                </div>
+
+
+                                <button
+                                    onclick="selectEvent(${event.id})"
+                                    class="btn btn-primary">
+
+                                    Select Tickets
+
+                                    <i
+                                        class="bi bi-arrow-right ms-1">
+                                    </i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   FILTER EVENTS
+========================= */
+
+function filterEvents() {
+
+
+    const searchText =
+        searchInput.value
+        .toLowerCase()
+        .trim();
+
+
+    const category =
+        categoryFilter.value;
+
+
+    const date =
+        dateFilter.value;
+
+let filteredEvents =
+    allEvents.filter(
+            function(event) {
+
+
+                /* Search */
+
+                const matchesSearch =
+
+                    event.name
+                    .toLowerCase()
+                    .includes(searchText)
+
+                    ||
+
+                    event.category
+                    .toLowerCase()
+                    .includes(searchText)
+
+                    ||
+
+                    event.location
+                    .toLowerCase()
+                    .includes(searchText);
+
+
+                /* Category */
+
+                const matchesCategory =
+
+                    category === "all"
+
+                    ||
+
+                    event.category === category;
+
+
+                /* Date */
+
+                const matchesDate =
+
+                    date === "all"
+
+                    ||
+
+                    event.month === date;
+
+
+                return (
+
+                    matchesSearch &&
+
+                    matchesCategory &&
+
+                    matchesDate
+
+                );
+
+            }
+        );
+
+
+    /* Sorting */
+
+    const sort =
+        sortFilter.value;
+
+
+    if (sort === "price-low") {
+
+        filteredEvents.sort(
+            (a, b) =>
+                a.price - b.price
+        );
+
+    }
+
+
+    else if (sort === "price-high") {
+
+        filteredEvents.sort(
+            (a, b) =>
+                b.price - a.price
+        );
+
+    }
+
+
+    else if (sort === "name") {
+
+        filteredEvents.sort(
+            (a, b) =>
+                a.name.localeCompare(
+                    b.name
+                )
+        );
+
+    }
+
+
+    displayEvents(
+        filteredEvents
+    );
+
+}
+
+
+
+/* =========================
+   SEARCH
+========================= */
+
+searchInput.addEventListener(
+    "input",
+    filterEvents
+);
+
+
+
+/* =========================
+   CATEGORY
+========================= */
+
+categoryFilter.addEventListener(
+    "change",
+    filterEvents
+);
+
+
+
+/* =========================
+   DATE
+========================= */
+
+dateFilter.addEventListener(
+    "change",
+    filterEvents
+);
+
+
+
+/* =========================
+   SORT
+========================= */
+
+sortFilter.addEventListener(
+    "change",
+    filterEvents
+);
+
+
+
+/* =========================
+   RESET
+========================= */
+
+document.getElementById(
+    "resetButton"
+).addEventListener(
+    "click",
+    function() {
+
+        searchInput.value = "";
+
+        categoryFilter.value =
+            "all";
+
+        dateFilter.value =
+            "all";
+
+        sortFilter.value =
+            "default";
+
+
+        displayEvents(events);
+
+    }
+);
+
+
+
+/* =========================
+   SELECT EVENT
+========================= */
+
+function selectEvent(id) {
+
+    const selectedEvent =
+        allEvents.find(
+            function(event) {
+
+                return event.id === id;
+
+            }
+        );
+
+
+    /*
+       Save selected event so
+       ticket-selection page can
+       use it later.
+    */
+
+    localStorage.setItem(
+        "selectedEvent",
+        JSON.stringify(
+            selectedEvent
+        )
+    );
+
+
+    /*
+       Go to ticket selection
+    */
+
+    window.location.href =
+        "../ticket-selection/index.html";
+
+}
+
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout() {
+
+    localStorage.removeItem(
+        "isLoggedIn"
+    );
+
+
+    window.location.href =
+        "../registration-login/index.html";
+
+}
+
+
+
+/* =========================
+   INITIAL DISPLAY
+========================= */
+
+displayEvents(allEvents);
+
+</script>
+
+
+</body>
+
+</html>
