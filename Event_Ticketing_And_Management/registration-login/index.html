@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>EventHub - Login</title>
+
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef4ff,
+                    #f8f9fa
+                );
+
+            min-height: 100vh;
+
+        }
+
+
+        .auth-page {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 40px 15px;
+
+        }
+
+
+        .auth-card {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 10px 40px
+                rgba(0, 0, 0, 0.10);
+
+        }
+
+
+        .event-icon {
+
+            width: 70px;
+
+            height: 70px;
+
+            margin: 0 auto 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #0d6efd;
+
+            color: white;
+
+            border-radius: 18px;
+
+            font-size: 32px;
+
+        }
+
+
+        .form-control {
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+        }
+
+
+        .form-control:focus {
+
+            border-color: #0d6efd;
+
+            box-shadow:
+                0 0 0 0.2rem
+                rgba(13, 110, 253, 0.15);
+
+        }
+
+
+        /* =========================
+           ROLE SELECTION
+        ========================= */
+
+        .role-title {
+
+            font-weight: 600;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .role-container {
+
+            display: flex;
+
+            gap: 15px;
+
+        }
+
+
+        .role-option {
+
+            flex: 1;
+
+            position: relative;
+
+        }
+
+
+        .role-option input {
+
+            position: absolute;
+
+            opacity: 0;
+
+        }
+
+
+        .role-label {
+
+            display: block;
+
+            text-align: center;
+
+            padding: 18px 10px;
+
+            border: 2px solid #dee2e6;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        .role-label:hover {
+
+            border-color: #0d6efd;
+
+            background: #f4f8ff;
+
+        }
+
+
+        .role-icon {
+
+            display: block;
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+
+            color: #6c757d;
+
+        }
+
+
+        .role-option input:checked
+        + .role-label {
+
+            border-color: #0d6efd;
+
+            background: #eaf2ff;
+
+            color: #0d6efd;
+
+        }
+
+
+        .role-option input:checked
+        + .role-label
+        .role-icon {
+
+            color: #0d6efd;
+
+        }
+
+
+        .btn-primary {
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font-weight: 600;
+
+        }
+
+
+        .switch-button {
+
+            border: none;
+
+            background: none;
+
+            color: #0d6efd;
+
+            font-weight: 600;
+
+        }
+
+
+        .switch-button:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        @media (max-width: 576px) {
+
+            .auth-card {
+
+                padding: 25px;
+
+            }
+
+
+            .role-container {
+
+                flex-direction: column;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+
+        <!-- =========================
+             LOGO
+        ========================= -->
+
+        <div class="text-center mb-4">
+
+            <div class="event-icon">
+
+                <i class="bi bi-ticket-perforated"></i>
+
+            </div>
+
+
+            <h2 class="fw-bold">
+
+                EventHub
+
+            </h2>
+
+
+            <p class="text-secondary">
+
+                Event Ticketing Management System
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================
+             TITLE
+        ========================= -->
+
+        <h3
+            id="formTitle"
+            class="text-center mb-4">
+
+            Login
+
+        </h3>
+
+
+
+        <!-- =========================
+             MESSAGE
+        ========================= -->
+
+        <div
+            id="message"
+            class="alert d-none">
+        </div>
+
+
+
+        <!-- =========================
+             FORM
+        ========================= -->
+
+        <form id="authForm">
+
+
+            <!-- =========================
+                 NAME
+            ========================= -->
+
+            <div
+                id="nameField"
+                class="mb-3 d-none">
+
+                <label class="form-label">
+
+                    Full Name
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="name"
+                    class="form-control"
+                    placeholder="Enter your full name">
+
+            </div>
+
+
+
+            <!-- =========================
+                 ROLE
+                 ALWAYS VISIBLE
+            ========================= -->
+
+            <div
+                id="roleField"
+                class="mb-4">
+
+
+                <div class="role-title">
+
+                    Select your role
+
+                </div>
+
+
+                <div class="role-container">
+
+
+                    <!-- CANDIDATE -->
+
+                    <div class="role-option">
+
+                        <input
+                            type="radio"
+                            id="candidate"
+                            name="role"
+                            value="candidate">
+
+
+                        <label
+                            for="candidate"
+                            class="role-label">
+
+                            <i
+                                class="bi bi-person role-icon">
+                            </i>
+
+
+                            <strong>
+
+                                Candidate
+
+                            </strong>
+
+
+                            <small
+                                class="d-block text-secondary mt-1">
+
+                                Browse and book events
+
+                            </small>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <!-- ORGANIZER -->
+
+                    <div class="role-option">
+
+                        <input
+                            type="radio"
+                            id="organizer"
+                            name="role"
+                            value="organizer">
+
+
+                        <label
+                            for="organizer"
+                            class="role-label">
+
+                            <i
+                                class="bi bi-building role-icon">
+                            </i>
+
+
+                            <strong>
+
+                                Organizer
+
+                            </strong>
+
+
+                            <small
+                                class="d-block text-secondary mt-1">
+
+                                Create and manage events
+
+                            </small>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 EMAIL
+            ========================= -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Email Address
+
+                </label>
+
+
+                <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    placeholder="Enter your email"
+                    required>
+
+            </div>
+
+
+
+            <!-- =========================
+                 PASSWORD
+            ========================= -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+
+                    Password
+
+                </label>
+
+
+                <input
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    placeholder="Enter your password"
+                    required>
+
+            </div>
+
+
+
+            <!-- =========================
+                 CONFIRM PASSWORD
+            ========================= -->
+
+            <div
+                id="confirmPasswordField"
+                class="mb-3 d-none">
+
+                <label class="form-label">
+
+                    Confirm Password
+
+                </label>
+
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    class="form-control"
+                    placeholder="Confirm your password">
+
+            </div>
+
+
+
+            <!-- =========================
+                 SUBMIT
+            ========================= -->
+
+            <button
+                type="submit"
+                id="submitButton"
+                class="btn btn-primary w-100">
+
+                Login
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- =========================
+             SWITCH
+        ========================= -->
+
+        <div class="text-center mt-4">
+
+            <span
+                id="switchText"
+                class="text-secondary">
+
+                Don't have an account?
+
+            </span>
+
+
+            <button
+                id="switchButton"
+                class="switch-button">
+
+                Register
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   MODE
+===================================================== */
+
+let loginMode = true;
+
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const authForm =
+    document.getElementById(
+        "authForm"
+    );
+
+
+const formTitle =
+    document.getElementById(
+        "formTitle"
+    );
+
+
+const nameField =
+    document.getElementById(
+        "nameField"
+    );
+
+
+const confirmPasswordField =
+    document.getElementById(
+        "confirmPasswordField"
+    );
+
+
+const submitButton =
+    document.getElementById(
+        "submitButton"
+    );
+
+
+const switchButton =
+    document.getElementById(
+        "switchButton"
+    );
+
+
+const switchText =
+    document.getElementById(
+        "switchText"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+
+/* =====================================================
+   SHOW MESSAGE
+===================================================== */
+
+function showMessage(text, type) {
+
+    message.className =
+        "alert alert-" + type;
+
+    message.textContent =
+        text;
+
+    message.classList.remove(
+        "d-none"
+    );
+
+}
+
+
+
+/* =====================================================
+   SWITCH LOGIN / REGISTER
+===================================================== */
+
+switchButton.addEventListener(
+    "click",
+    function() {
+
+
+        loginMode =
+            !loginMode;
+
+
+        message.classList.add(
+            "d-none"
+        );
+
+
+        /* =========================
+           LOGIN
+        ========================= */
+
+        if (loginMode) {
+
+
+            formTitle.textContent =
+                "Login";
+
+
+            submitButton.textContent =
+                "Login";
+
+
+            nameField.classList.add(
+                "d-none"
+            );
+
+
+            confirmPasswordField.classList.add(
+                "d-none"
+            );
+
+
+            switchText.textContent =
+                "Don't have an account?";
+
+
+            switchButton.textContent =
+                "Register";
+
+
+            /*
+             * IMPORTANT:
+             * Role stays visible during LOGIN
+             */
+
+        }
+
+
+        /* =========================
+           REGISTER
+        ========================= */
+
+        else {
+
+
+            formTitle.textContent =
+                "Create Account";
+
+
+            submitButton.textContent =
+                "Register";
+
+
+            nameField.classList.remove(
+                "d-none"
+            );
+
+
+            confirmPasswordField.classList.remove(
+                "d-none"
+            );
+
+
+            switchText.textContent =
+                "Already have an account?";
+
+
+            switchButton.textContent =
+                "Login";
+
+
+            /*
+             * Role also stays visible
+             * during registration.
+             */
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   FORM SUBMIT
+===================================================== */
+
+authForm.addEventListener(
+    "submit",
+    function(event) {
+
+
+        event.preventDefault();
+
+
+
+        /* =========================
+           VALUES
+        ========================= */
+
+        const name =
+            document.getElementById(
+                "name"
+            ).value.trim();
+
+
+        const email =
+            document.getElementById(
+                "email"
+            ).value.trim();
+
+
+        const password =
+            document.getElementById(
+                "password"
+            ).value;
+
+
+        const confirmPassword =
+            document.getElementById(
+                "confirmPassword"
+            ).value;
+
+
+        const selectedRole =
+            document.querySelector(
+                'input[name="role"]:checked'
+            );
+
+
+
+        /* =================================================
+           ROLE MUST BE SELECTED FIRST
+        ================================================= */
+
+        if (!selectedRole) {
+
+            showMessage(
+                "Please select whether you are a Candidate or Organizer.",
+                "danger"
+            );
+
+            return;
+
+        }
+
+
+
+        /* =================================================
+           REGISTRATION
+        ================================================= */
+
+        if (!loginMode) {
+
+
+            if (!name) {
+
+                showMessage(
+                    "Please enter your name.",
+                    "danger"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                password.length < 6
+            ) {
+
+                showMessage(
+                    "Password must contain at least 6 characters.",
+                    "danger"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                password !==
+                confirmPassword
+            ) {
+
+                showMessage(
+                    "Passwords do not match.",
+                    "danger"
+                );
+
+                return;
+
+            }
+
+
+
+            /* =========================
+               CREATE USER
+            ========================= */
+
+            const user = {
+
+                name: name,
+
+                email: email,
+
+                password: password,
+
+                role: selectedRole.value
+
+            };
+
+
+            localStorage.setItem(
+                "eventUser",
+                JSON.stringify(user)
+            );
+
+
+            showMessage(
+                "Registration successful! Please login.",
+                "success"
+            );
+
+
+            /*
+             * Clear form
+             */
+
+            authForm.reset();
+
+
+            /*
+             * Switch to LOGIN
+             */
+
+            loginMode = true;
+
+
+            formTitle.textContent =
+                "Login";
+
+
+            submitButton.textContent =
+                "Login";
+
+
+            nameField.classList.add(
+                "d-none"
+            );
+
+
+            confirmPasswordField.classList.add(
+                "d-none"
+            );
+
+
+            switchText.textContent =
+                "Don't have an account?";
+
+
+            switchButton.textContent =
+                "Register";
+
+
+            return;
+
+        }
+
+
+
+        /* =================================================
+           LOGIN
+        ================================================= */
+
+        const savedUser =
+            JSON.parse(
+                localStorage.getItem(
+                    "eventUser"
+                )
+            );
+
+
+
+        if (!savedUser) {
+
+            showMessage(
+                "No account found. Please register first.",
+                "danger"
+            );
+
+            return;
+
+        }
+
+
+
+        /* =================================================
+           CHECK LOGIN
+        ================================================= */
+
+        if (
+            email === savedUser.email &&
+
+            password === savedUser.password &&
+
+            selectedRole.value === savedUser.role
+        ) {
+
+
+            /*
+             * Login successful
+             */
+
+            localStorage.setItem(
+                "isLoggedIn",
+                "true"
+            );
+
+
+            localStorage.setItem(
+                "userRole",
+                savedUser.role
+            );
+
+
+
+            /* =============================================
+               CANDIDATE
+            ============================================= */
+
+            if (
+                savedUser.role ===
+                "candidate"
+            ) {
+
+
+                showMessage(
+                    "Candidate login successful! Opening Event Details...",
+                    "success"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        /*
+                         * IMPORTANT:
+                         * Candidate goes to
+                         * EVENT DETAILS first.
+                         */
+
+                        window.location.href =
+                            "../event-details/index.html";
+
+                    },
+                    1000
+                );
+
+            }
+
+
+
+            /* =============================================
+               ORGANIZER
+            ============================================= */
+
+            else if (
+                savedUser.role ===
+                "organizer"
+            ) {
+
+
+                showMessage(
+                    "Organizer login successful!",
+                    "success"
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "../organizer-dashboard/index.html";
+
+                    },
+                    1000
+                );
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           INVALID LOGIN
+        ================================================= */
+
+        else {
+
+
+            if (
+                selectedRole.value !==
+                savedUser.role
+            ) {
+
+                showMessage(
+                    "The selected role does not match your registered account.",
+                    "danger"
+                );
+
+            }
+
+            else {
+
+                showMessage(
+                    "Invalid email or password.",
+                    "danger"
+                );
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
