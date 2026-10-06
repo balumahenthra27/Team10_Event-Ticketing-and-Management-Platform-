@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>EventHub - Payment</title>
+
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            background: #f5f7fa;
+
+            font-family: Arial, sans-serif;
+
+            color: #212529;
+
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.12);
+
+        }
+
+
+        .navbar-brand {
+
+            font-size: 22px;
+
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .payment-page {
+
+            padding:
+                45px 0 70px;
+
+        }
+
+
+        .page-title {
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .page-title h1 {
+
+            font-size: 36px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .page-title p {
+
+            color: #6c757d;
+
+            margin: 0;
+
+            font-size: 16px;
+
+        }
+
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .payment-card,
+        .summary-card {
+
+            background: white;
+
+            border: none;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .payment-card {
+
+            padding: 30px;
+
+        }
+
+
+        .summary-card {
+
+            padding: 30px;
+
+            position: sticky;
+
+            top: 20px;
+
+        }
+
+
+        /* =========================
+           PAYMENT METHOD
+        ========================= */
+
+        .payment-method {
+
+            border: 2px solid #e1e5ea;
+
+            border-radius: 12px;
+
+            padding: 17px;
+
+            margin-bottom: 14px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            background: white;
+
+        }
+
+
+        .payment-method:hover {
+
+            border-color: #0d6efd;
+
+            background: #f8fbff;
+
+        }
+
+
+        .payment-method.active {
+
+            border-color: #0d6efd;
+
+            background: #eef5ff;
+
+        }
+
+
+        .payment-method input {
+
+            display: none;
+
+        }
+
+
+        .method-content {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+
+        .method-icon {
+
+            width: 52px;
+
+            height: 52px;
+
+            border-radius: 12px;
+
+            background: #f1f3f5;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            color: #0d6efd;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .method-name {
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+        }
+
+
+        .method-description {
+
+            font-size: 13px;
+
+            color: #6c757d;
+
+            margin-top: 3px;
+
+        }
+
+
+        .check-icon {
+
+            margin-left: auto;
+
+            color: #0d6efd;
+
+            font-size: 20px;
+
+            display: none;
+
+        }
+
+
+        .payment-method.active
+        .check-icon {
+
+            display: block;
+
+        }
+
+
+        /* =========================
+           PAYMENT DETAILS
+        ========================= */
+
+        .payment-details {
+
+            margin-top: 25px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #e9ecef;
+
+        }
+
+
+        .payment-details h5 {
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .form-label {
+
+            font-weight: 600;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .form-control {
+
+            padding: 12px 14px;
+
+            border-radius: 8px;
+
+            border: 1px solid #ced4da;
+
+        }
+
+
+        .form-control:focus {
+
+            border-color: #0d6efd;
+
+            box-shadow:
+                0 0 0 0.2rem
+                rgba(13, 110, 253, 0.12);
+
+        }
+
+
+        /* =========================
+           PAY BUTTON
+        ========================= */
+
+        .pay-button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            margin-top: 10px;
+
+            border-radius: 9px;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+        }
+
+
+        .secure-text {
+
+            text-align: center;
+
+            color: #6c757d;
+
+            font-size: 13px;
+
+            margin-top: 15px;
+
+        }
+
+
+        /* =========================
+           SUMMARY
+        ========================= */
+
+        .summary-title {
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .event-name {
+
+            font-size: 21px;
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .summary-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 11px 0;
+
+            font-size: 15px;
+
+        }
+
+
+        .summary-row span:first-child {
+
+            color: #6c757d;
+
+        }
+
+
+        .total-row {
+
+            margin-top: 8px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid #dee2e6;
+
+            font-size: 21px;
+
+            font-weight: 700;
+
+        }
+
+
+        .total-row span:first-child {
+
+            color: #212529;
+
+        }
+
+
+        .total-price {
+
+            color: #0d6efd;
+
+        }
+
+
+        /* =========================
+           TICKET BADGES
+        ========================= */
+
+        .ticket-badge {
+
+            display: inline-block;
+
+            background: #eef5ff;
+
+            color: #0d6efd;
+
+            padding: 5px 10px;
+
+            border-radius: 6px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        /* =========================
+           SUCCESS PAGE
+        ========================= */
+
+        #successPage {
+
+            display: none;
+
+            min-height: 70vh;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .success-card {
+
+            background: white;
+
+            max-width: 600px;
+
+            width: 100%;
+
+            padding: 45px;
+
+            border-radius: 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 8px 30px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .success-icon {
+
+            width: 85px;
+
+            height: 85px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #d1e7dd;
+
+            color: #198754;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 45px;
+
+        }
+
+
+        .success-card h2 {
+
+            font-weight: 700;
+
+        }
+
+
+        .booking-id {
+
+            background: #f1f3f5;
+
+            border-radius: 8px;
+
+            padding: 13px;
+
+            margin-top: 20px;
+
+            font-weight: 700;
+
+        }
+
+
+        .success-details {
+
+            margin-top: 20px;
+
+            text-align: left;
+
+            background: #f8f9fa;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+        }
+
+
+        .success-detail-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 7px 0;
+
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 991px) {
+
+            .summary-card {
+
+                position: static;
+
+            }
+
+        }
+
+
+        @media (max-width: 576px) {
+
+            .payment-page {
+
+                padding-top: 30px;
+
+            }
+
+
+            .page-title h1 {
+
+                font-size: 30px;
+
+            }
+
+
+            .payment-card,
+            .summary-card {
+
+                padding: 22px;
+
+            }
+
+
+            .method-icon {
+
+                width: 45px;
+
+                height: 45px;
+
+            }
+
+        }
+
+        .qr-payment-box {
+    margin-top: 20px;
+    padding: 25px;
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    width: 100%;
+}
+
+.qr-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.qr-code {
+    display: block;
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+}
+
+@media (max-width: 576px) {
+    .qr-code {
+        width: 190px;
+        height: 190px;
+    }
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-dark bg-dark py-3">
+
+    <div class="container">
+
+        <span class="navbar-brand fw-bold">
+
+            <i
+                class="bi bi-ticket-perforated me-2">
+            </i>
+
+            EventHub
+
+        </span>
+
+
+        <button
+            onclick="logout()"
+            class="btn btn-outline-light">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     PAYMENT PAGE
+===================================================== -->
+
+<div
+    id="paymentPage"
+    class="payment-page">
+
+    <div class="container">
+
+
+        <!-- PAGE TITLE -->
+
+        <div class="page-title">
+
+            <h1>
+                Complete Your Payment
+            </h1>
+
+            <p>
+                Choose your preferred payment method
+                to complete your booking.
+            </p>
+
+        </div>
+
+
+
+        <div class="row g-4">
+
+
+            <!-- =================================================
+                 LEFT SIDE - PAYMENT
+            ================================================= -->
+
+            <div class="col-lg-7">
+
+                <div class="payment-card">
+
+
+                    <h4 class="fw-bold mb-4">
+
+                        Select Payment Method
+
+                    </h4>
+
+
+
+                    <!-- =========================
+                         UPI
+                    ========================= -->
+
+                    <label
+                        class="payment-method"
+                        data-method="upi">
+
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="upi">
+
+
+                        <div class="method-content">
+
+                            <div class="method-icon">
+
+                                <i class="bi bi-phone"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="method-name">
+
+                                    UPI
+
+                                </div>
+
+                                <div
+                                    class="method-description">
+
+                                    Pay using any UPI application
+
+                                </div>
+
+                            </div>
+
+
+                            <i
+                                class="bi bi-check-circle-fill check-icon">
+                            </i>
+
+                        </div>
+
+                    </label>
+
+
+
+                    <!-- =========================
+                         GOOGLE PAY
+                    ========================= -->
+
+                    <label
+                        class="payment-method"
+                        data-method="gpay">
+
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="gpay">
+
+
+                        <div class="method-content">
+
+                            <div class="method-icon">
+
+                                <i class="bi bi-google"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="method-name">
+
+                                    Google Pay
+
+                                </div>
+
+                                <div
+                                    class="method-description">
+
+                                    Pay securely using Google Pay
+
+                                </div>
+
+                            </div>
+
+
+                            <i
+                                class="bi bi-check-circle-fill check-icon">
+                            </i>
+
+                        </div>
+
+                    </label>
+
+
+
+                    <!-- =========================
+                         PHONEPE
+                    ========================= -->
+
+                    <label
+                        class="payment-method"
+                        data-method="phonepe">
+
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="phonepe">
+
+
+                        <div class="method-content">
+
+                            <div class="method-icon">
+
+                                <i class="bi bi-phone-fill"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="method-name">
+
+                                    PhonePe
+
+                                </div>
+
+                                <div
+                                    class="method-description">
+
+                                    Pay using PhonePe
+
+                                </div>
+
+                            </div>
+
+
+                            <i
+                                class="bi bi-check-circle-fill check-icon">
+                            </i>
+
+                        </div>
+
+                    </label>
+
+
+
+                    <!-- =========================
+                         PAYTM
+                    ========================= -->
+
+                    <label
+                        class="payment-method"
+                        data-method="paytm">
+
+                        <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="paytm">
+
+
+                        <div class="method-content">
+
+                            <div class="method-icon">
+
+                                <i class="bi bi-wallet2"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="method-name">
+
+                                    Paytm
+
+                                </div>
+
+                                <div
+                                    class="method-description">
+
+                                    Pay using Paytm
+
+                                </div>
+
+                            </div>
+
+
+                            <i
+                                class="bi bi-check-circle-fill check-icon">
+                            </i>
+
+                        </div>
+
+                    </label>
+
+
+
+                    <!-- =================================================
+                         PAYMENT DETAILS
+                    ================================================= -->
+
+                    <div
+                        id="paymentDetails"
+                        class="payment-details d-none">
+
+
+                        <h5>
+                            Payment Details
+                        </h5>
+
+
+                        <!-- UPI ID -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="upiId"
+                                class="form-label">
+
+                                UPI ID
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="upiId"
+                                class="form-control"
+                                placeholder="example@upi">
+
+
+                            <small class="text-secondary">
+
+                                Example:
+                                yourname@oksbi
+
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- ERROR -->
+
+                        <div
+                            id="paymentError"
+                            class="alert alert-danger d-none">
+                        </div>
+
+
+
+                        <!-- PAY -->
+
+                        <button
+                            id="payButton"
+                            class="btn btn-primary pay-button">
+
+                            <i
+                                class="bi bi-lock-fill me-2">
+                            </i>
+
+                            Pay Now
+
+                        </button>
+
+                        <!-- UPI ID -->
+
+<div id="upiSection">
+    ...
+</div>
+
+
+<!-- =========================
+     QR CODE PAYMENT
+========================= -->
+
+<div class="qr-payment-box">
+
+    <h6 class="fw-bold text-center mb-2">
+        Scan & Pay
+    </h6>
+
+    <p class="text-secondary text-center small mb-3">
+        Scan this QR code using
+        Google Pay, PhonePe or Paytm
+    </p>
+
+    <div class="qr-container">
+
+        <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi://pay?pa=YOUR-UPI-ID@upi%26pn=EventHub%26cu=INR"
+            alt="UPI QR Code"
+            class="qr-code">
+
+    </div>
+
+    
+
+    
+
+</div>
+
+
+<!-- Pay Now Button -->
+
+
+
+                        <div class="secure-text">
+
+                            <i
+                                class="bi bi-shield-check me-1">
+                            </i>
+
+                            Your payment information is secure
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RIGHT SIDE - SUMMARY
+            ================================================= -->
+
+            <div class="col-lg-5">
+
+                <div class="summary-card">
+
+
+                    <div class="summary-title">
+
+                        Booking Summary
+
+                    </div>
+
+
+                    <div
+                        class="ticket-badge">
+
+                        EVENT TICKETS
+
+                    </div>
+
+
+                    <div
+                        id="eventName"
+                        class="event-name">
+
+                        KCT Tech Fest 2026
+
+                    </div>
+
+
+
+                    <!-- STANDARD -->
+
+                    <div class="summary-row">
+
+                        <span>
+                            Standard Tickets
+                        </span>
+
+
+                        <strong
+                            id="standardQuantity">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- VIP -->
+
+                    <div class="summary-row">
+
+                        <span>
+                            VIP Tickets
+                        </span>
+
+
+                        <strong
+                            id="vipQuantity">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- TOTAL TICKETS -->
+
+                    <div class="summary-row">
+
+                        <span>
+                            Total Tickets
+                        </span>
+
+
+                        <strong
+                            id="totalTickets">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- TOTAL -->
+
+                    <div class="summary-row total-row">
+
+                        <span>
+                            Total Amount
+                        </span>
+
+
+                        <span
+                            id="totalPrice"
+                            class="total-price">
+
+                            ₹0
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     SUCCESS PAGE
+===================================================== -->
+
+<div
+    id="successPage"
+    class="container">
+
+    <div class="success-card">
+
+
+        <!-- SUCCESS ICON -->
+
+        <div class="success-icon">
+
+            <i class="bi bi-check-lg"></i>
+
+        </div>
+
+
+        <h2 class="mb-2">
+
+            Payment Successful!
+
+        </h2>
+
+
+        <p class="text-secondary">
+
+            Your event tickets have been booked successfully.
+
+        </p>
+
+
+
+        <!-- BOOKING ID -->
+
+        <div
+            id="bookingId"
+            class="booking-id">
+
+            Booking ID
+
+        </div>
+
+
+
+        <!-- SUCCESS DETAILS -->
+
+        <div class="success-details">
+
+
+            <div class="success-detail-row">
+
+                <span>
+                    Event
+                </span>
+
+
+                <strong
+                    id="successEvent">
+
+                </strong>
+
+            </div>
+
+
+            <div class="success-detail-row">
+
+                <span>
+                    Tickets
+                </span>
+
+
+                <strong
+                    id="successTickets">
+
+                </strong>
+
+            </div>
+
+
+            <div class="success-detail-row">
+
+                <span>
+                    Amount Paid
+                </span>
+
+
+                <strong
+                    id="successAmount">
+
+                </strong>
+
+            </div>
+
+
+            <div class="success-detail-row">
+
+                <span>
+                    Payment Method
+                </span>
+
+
+                <strong
+                    id="successMethod">
+
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BUTTONS -->
+
+        <div
+            class="d-flex gap-2 justify-content-center mt-4 flex-wrap">
+
+
+            <button
+                onclick="goToEvents()"
+                class="btn btn-primary px-4">
+
+                Browse More Events
+
+            </button>
+
+
+            <button
+                onclick="printTicket()"
+                class="btn btn-outline-primary px-4">
+
+                <i
+                    class="bi bi-printer me-1">
+                </i>
+
+                Print Ticket
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   LOGIN CHECK
+===================================================== */
+
+if (
+    localStorage.getItem("isLoggedIn")
+    !== "true"
+) {
+
+    window.location.href =
+        "../registration-login/index.html";
+
+}
+
+
+
+/* =====================================================
+   GET SELECTED EVENT
+===================================================== */
+
+const selectedEvent =
+    JSON.parse(
+        localStorage.getItem(
+            "selectedEvent"
+        )
+    );
+
+
+
+/* =====================================================
+   GET BOOKING DATA
+===================================================== */
+
+const bookingData =
+    JSON.parse(
+        localStorage.getItem(
+            "bookingData"
+        )
+    );
+
+
+
+/* =====================================================
+   CHECK DATA
+===================================================== */
+
+if (
+    !bookingData
+) {
+
+    alert(
+        "Booking information was not found."
+    );
+
+
+    window.location.href =
+        "../ticket-selection/index.html";
+
+}
+
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const eventName =
+    document.getElementById(
+        "eventName"
+    );
+
+
+const standardQuantity =
+    document.getElementById(
+        "standardQuantity"
+    );
+
+
+const vipQuantity =
+    document.getElementById(
+        "vipQuantity"
+    );
+
+
+const totalTickets =
+    document.getElementById(
+        "totalTickets"
+    );
+
+
+const totalPrice =
+    document.getElementById(
+        "totalPrice"
+    );
+
+
+
+/* =====================================================
+   DISPLAY BOOKING DATA
+===================================================== */
+
+if (selectedEvent) {
+
+    eventName.textContent =
+        selectedEvent.name;
+
+}
+
+
+standardQuantity.textContent =
+    bookingData.standardQuantity;
+
+
+vipQuantity.textContent =
+    bookingData.vipQuantity;
+
+
+totalTickets.textContent =
+    bookingData.totalTickets;
+
+
+totalPrice.textContent =
+    "₹" + bookingData.totalPrice;
+
+
+
+/* =====================================================
+   PAYMENT METHODS
+===================================================== */
+
+const paymentMethods =
+    document.querySelectorAll(
+        ".payment-method"
+    );
+
+
+const paymentDetails =
+    document.getElementById(
+        "paymentDetails"
+    );
+
+
+let selectedPaymentMethod =
+    "";
+
+
+
+paymentMethods.forEach(
+    function(method) {
+
+        method.addEventListener(
+            "click",
+            function() {
+
+
+                /* Remove active */
+
+                paymentMethods.forEach(
+                    function(item) {
+
+                        item.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                /* Add active */
+
+                method.classList.add(
+                    "active"
+                );
+
+
+                /* Get selected method */
+
+                selectedPaymentMethod =
+                    method.dataset.method;
+
+
+                /* Show payment details */
+
+                paymentDetails.classList.remove(
+                    "d-none"
+                );
+
+
+                /* Focus UPI */
+
+                document.getElementById(
+                    "upiId"
+                ).focus();
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   PAY BUTTON
+===================================================== */
+
+document.getElementById(
+    "payButton"
+).addEventListener(
+    "click",
+    function() {
+
+
+        const upiId =
+            document.getElementById(
+                "upiId"
+            ).value.trim();
+
+
+        const error =
+            document.getElementById(
+                "paymentError"
+            );
+
+
+        const button =
+            document.getElementById(
+                "payButton"
+            );
+
+
+        error.classList.add(
+            "d-none"
+        );
+
+
+
+        /* =========================
+           PAYMENT METHOD CHECK
+        ========================= */
+
+        if (
+            selectedPaymentMethod === ""
+        ) {
+
+            error.textContent =
+                "Please select a payment method.";
+
+            error.classList.remove(
+                "d-none"
+            );
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           UPI CHECK
+        ========================= */
+
+        if (
+            upiId === ""
+        ) {
+
+            error.textContent =
+                "Please enter your UPI ID.";
+
+            error.classList.remove(
+                "d-none"
+            );
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           UPI FORMAT
+        ========================= */
+
+        if (
+            !upiId.includes("@")
+        ) {
+
+            error.textContent =
+                "Please enter a valid UPI ID. Example: name@upi";
+
+            error.classList.remove(
+                "d-none"
+            );
+
+            return;
+
+        }
+
+
+
+        /* =========================
+           PROCESSING
+        ========================= */
+
+        button.disabled = true;
+
+
+        button.innerHTML = `
+
+            <span
+                class="spinner-border
+                       spinner-border-sm
+                       me-2">
+            </span>
+
+            Processing Payment...
+
+        `;
+
+
+
+        /*
+         * DEMO PAYMENT
+         *
+         * This simulates successful
+         * payment for your project.
+         */
+
+        setTimeout(
+            function() {
+
+                completePayment();
+
+            },
+            2000
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   COMPLETE PAYMENT
+===================================================== */
+
+function completePayment() {
+
+
+    /* =========================
+       GENERATE BOOKING ID
+    ========================= */
+
+    const bookingId =
+        "EVT-" +
+        Date.now()
+        .toString()
+        .slice(-8);
+
+
+
+    /* =========================
+       PAYMENT DATA
+    ========================= */
+
+    const paymentData = {
+
+        bookingId:
+            bookingId,
+
+        event:
+            selectedEvent
+                ? selectedEvent.name
+                : "Event",
+
+        standardTickets:
+            bookingData.standardQuantity,
+
+        vipTickets:
+            bookingData.vipQuantity,
+
+        totalTickets:
+            bookingData.totalTickets,
+
+        amount:
+            bookingData.totalPrice,
+
+        paymentMethod:
+            selectedPaymentMethod,
+
+        paymentStatus:
+            "SUCCESS",
+
+        paymentDate:
+            new Date().toLocaleString()
+
+    };
+
+
+
+    /* =========================
+       SAVE PAYMENT
+    ========================= */
+
+    localStorage.setItem(
+        "paymentData",
+        JSON.stringify(
+            paymentData
+        )
+    );
+
+
+
+    /* =========================
+       SUCCESS INFORMATION
+    ========================= */
+
+    document.getElementById(
+        "bookingId"
+    ).textContent =
+        "Booking ID: " +
+        bookingId;
+
+
+    document.getElementById(
+        "successEvent"
+    ).textContent =
+        paymentData.event;
+
+
+    document.getElementById(
+        "successTickets"
+    ).textContent =
+        paymentData.totalTickets;
+
+
+    document.getElementById(
+        "successAmount"
+    ).textContent =
+        "₹" +
+        paymentData.amount;
+
+
+    document.getElementById(
+        "successMethod"
+    ).textContent =
+        getPaymentMethodName(
+            selectedPaymentMethod
+        );
+
+
+
+    /* =========================
+       HIDE PAYMENT PAGE
+    ========================= */
+
+    document.getElementById(
+        "paymentPage"
+    ).style.display =
+        "none";
+
+
+
+    /* =========================
+       SHOW SUCCESS
+    ========================= */
+
+    document.getElementById(
+        "successPage"
+    ).style.display =
+        "flex";
+
+}
+
+
+
+/* =====================================================
+   PAYMENT METHOD NAME
+===================================================== */
+
+function getPaymentMethodName(
+    method
+) {
+
+    if (
+        method === "upi"
+    ) {
+
+        return "UPI";
+
+    }
+
+
+    if (
+        method === "gpay"
+    ) {
+
+        return "Google Pay";
+
+    }
+
+
+    if (
+        method === "phonepe"
+    ) {
+
+        return "PhonePe";
+
+    }
+
+
+    if (
+        method === "paytm"
+    ) {
+
+        return "Paytm";
+
+    }
+
+
+    return method;
+
+}
+
+
+
+/* =====================================================
+   BROWSE EVENTS
+===================================================== */
+
+function goToEvents() {
+
+    window.location.href =
+        "../browse-events/index.html";
+
+}
+
+
+
+/* =====================================================
+   PRINT TICKET
+===================================================== */
+
+function printTicket() {
+
+    window.print();
+
+}
+
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+    localStorage.removeItem(
+        "isLoggedIn"
+    );
+
+
+    localStorage.removeItem(
+        "userRole"
+    );
+
+
+    window.location.href =
+        "../registration-login/index.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
